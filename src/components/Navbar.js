@@ -10,10 +10,13 @@ export default function Navbar(props) {
       }`}
     >
       <div className="container-fluid">
+        {/* Brand */}
         <span className="navbar-brand fw-bold">{props.title}</span>
 
-        {/* Stats */}
+        {/* Right section */}
         <div className="d-flex align-items-center gap-3">
+
+          {/* Stats */}
           <span className="badge bg-primary">
             Words: {props.wordCount}
           </span>
@@ -21,9 +24,22 @@ export default function Navbar(props) {
             Chars: {props.charCount}
           </span>
 
-          {/* Dark mode toggle */}
+          {/* Mode label */}
+          <span
+            className={`fw-semibold ${
+              props.mode === 'dark' ? 'text-light' : 'text-dark'
+            }`}
+          >
+            {props.mode === 'dark' ? 'Dark' : 'Light'}
+          </span>
+
+          {/* Dark mode toggle (CONTROLLED) */}
           <label className="switch">
-            <input type="checkbox" onChange={props.toggleMode} />
+            <input
+              type="checkbox"
+              onChange={props.toggleMode}
+              checked={props.mode === 'dark'}
+            />
             <span className="slider"></span>
           </label>
         </div>
