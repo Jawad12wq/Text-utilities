@@ -1,38 +1,85 @@
-.App {
-  text-align: center;
+/* Global reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Smooth theme transition */
+body {
+  background-color: #f8fafc;
+  transition: background-color 0.4s ease, color 0.4s ease;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Navbar brand */
+.navbar-brand {
+  letter-spacing: 0.5px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+/* Custom Dark Mode Toggle */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 26px;
 }
 
-.App-link {
-  color: #61dafb;
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #cbd5e1;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #ffffff;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+/* Checked state */
+input:checked + .slider {
+  background-color: #6366f1;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* TextForm container animation */
+textarea,
+button,
+.container {
+  transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
+
+/* Textarea improvements */
+textarea {
+  resize: none;
+  font-size: 15px;
+}
+
+/* Buttons hover effect */
+button:hover {
+  transform: translateY(-1px);
+}
+
+/* Utility spacing */
+.container {
+  max-width: 900px;
 }

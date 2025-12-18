@@ -1,89 +1,135 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 export default function TextForm(props) {
-  const [text, setText] = useState('');
+  const text = props.text;
+  const setText = props.setText;
 
-  // Uppercase
-  const handleUpClick = () => {
-    setText(text.toUpperCase());
-  };
+  const wordCount =
+    text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
 
-  // Lowercase
-  const handleLoClick = () => {
-    setText(text.toLowerCase());
-  };
-
-  // Clear text
-  const handleClearClick = () => {
-    setText('');
-  };
-
-  // Remove extra spaces
-  const handleExtraSpaces = () => {
-    let newText = text.split(/\s+/).join(" ");
-    setText(newText);
-  };
-
-  // Copy text
-  const handleCopy = () => {
-    navigator.clipboard.writeText(text);
-  };
+  const readTime = (0.008 * wordCount).toFixed(2);
 
   // Capitalize each word
   const handleCapitalize = () => {
-    let newText = text
+    const newText = text
       .toLowerCase()
-      .split(" ")
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
+      .split(' ')
+      .map(word =>
+        word.charAt(0).toUpperCase() + word.slice(1)
+      )
+      .join(' ');
     setText(newText);
   };
 
-  // Reverse text
-  const handleReverse = () => {
-    let newText = text.split("").reverse().join("");
-    setText(newText);
+  // Extract only numbers
+  const handleNumbersOnly = () => {
+    const numbers = text.replace(/[^0-9]/g, '');
+    setText(numbers);
   };
-
-  // On change
-  const handleOnChange = (event) => {
-    setText(event.target.value);
-  };
-
-  // Word count (safe)
-  const wordCount = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
 
   return (
     <>
-      <div className="container">
-        <h1>{props.heading}</h1>
+      <div
+        className="p-4 rounded shadow-sm"
+        style={{
+          backgroundColor: props.mode === 'dark' ? '#020617' : 'white',
+          color: props.mode === 'dark' ? '#e5e7eb' : '#111827'
+        }}
+      >
+        <h2 className="mb-2">{props.heading}</h2>
 
-        <div className="mb-3">
-          <textarea
-            className="form-control"
-            value={text}
-            onChange={handleOnChange}
-            id="mybox"
-            rows="8"
-          ></textarea>
+        {/* FIXED text color */}
+        <p
+          style={{
+            color: props.mode === 'dark' ? '#cbd5e1' : '#4b5563'
+          }}
+        >
+          Analyze and transform your text instantly.
+        </p>
+
+        {/* Textarea */}
+        <textarea
+          className="form-control mb-3"
+          rows="8"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          style={{
+            backgroundColor: props.mode === 'dark' ? '#020617' : 'white',
+            color: props.mode === 'dark' ? 'white' : 'black',
+            border: '1px solid #64748b'
+          }}
+        />
+
+        {/* Utilities */}
+        <div className="d-flex flex-wrap gap-2 mb-4">
+          <button className="btn btn-primary" onClick={() => setText(text.toUpperCase())}>
+            Uppercase
+          </button>
+
+          <button className="btn btn-secondary" onClick={() => setText(text.toLowerCase())}>
+            Lowercase
+          </button>
+
+          <button className="btn btn-info" onClick={handleCapitalize}>
+            Capitalize
+          </button>
+
+          <button className="btn btn-warning" onClick={() => setText(text.split(/\s+/).join(' '))}>
+            Remove Spaces
+          </button>
+
+
+          <button className="btn btn-success" onClick={() => navigator.clipboard.writeText(text)}>
+            Copy
+          </button>
+
+          <button className="btn btn-danger" onClick={() => setText('')}>
+            Clear
+          </button>
         </div>
 
-        <button className="btn btn-primary mx-1" onClick={handleUpClick}>Uppercase</button>
-        <button className="btn btn-primary mx-1" onClick={handleLoClick}>Lowercase</button>
-        <button className="btn btn-primary mx-1" onClick={handleCapitalize}>Capitalize</button>
-        <button className="btn btn-primary mx-1" onClick={handleReverse}>Reverse</button>
-        <button className="btn btn-primary mx-1" onClick={handleExtraSpaces}>Remove Spaces</button>
-        <button className="btn btn-primary mx-1" onClick={handleCopy}>Copy</button>
-        <button className="btn btn-danger mx-1" onClick={handleClearClick}>Clear</button>
+        {/* Analytics */}
+        <div className="row text-center">
+          <div className="col-md-4">
+            <div className="card p-3 shadow-sm">
+              <h5>{wordCount}</h5>
+              <small>Words</small>
+            </div>
+          </div>
+          <div className="col-md-4">
+            <div className="card p-3 shadow-sm">
+              <h5>{text.length}</h5>
+              <small>Characters</small>
+            </div>
+          </div>
+          <div className="col-md-4">
+            <div className="card p-3 shadow-sm">
+              <h5>{readTime} min</h5>
+              <small>Read Time</small>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="container my-3">
-        <h2>Your Text Summary</h2>
-        <p>{wordCount} words and {text.length} characters</p>
-        <p>{(0.008 * wordCount).toFixed(2)} Minutes read</p>
+      {/* PREVIEW (FIXED COLOR) */}
+      <div className="mt-4">
+        <h4
+          style={{
+            color: props.mode === 'dark' ? '#e5e7eb' : '#111827'
+          }}
+        >
+          Preview
+        </h4>
 
-        <h2>Preview</h2>
-        <p>{text.length > 0 ? text : "Nothing to preview"}</p>
+        <p
+          className="border rounded p-3"
+          style={{
+            backgroundColor: props.mode === 'dark' ? '#020617' : '#f8fafc',
+            color: props.mode === 'dark' ? '#e5e7eb' : '#111827'
+          }}
+        >
+          {text.length > 0 ? text : 'Nothing to preview'}
+        </p>
       </div>
     </>
   );
